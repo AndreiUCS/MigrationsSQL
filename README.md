@@ -1,7 +1,7 @@
 # Projeto Migrations
 
 ## Tecnologias
-- Java 25
+- Java 17+
 - Spring Boot
 - PostgreSQL
 - Flyway (migrations)
