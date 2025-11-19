@@ -1,0 +1,34 @@
+name: Deploy Dev
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy HTML to Vercel (Dev)
+        run: |
+          vercel deploy \
+          --token ${{ secrets.VERCEL_TOKEN }} \
+          --project ${{ secrets.VERCEL_PROJECT_DEV }} \
+          --org ${{ secrets.VERCEL_ORG_ID }} \
+          --yes
+
+      - name: Run SQL migrations on Supabase (Dev)
+        run: |
+          for file in resources/db/*.sql; do
+            echo "Running file: $file"
+            curl "${{ secrets.SUPABASE_URL_DEV }}/rest/v1/rpc/execute_sql" \
+              -X POST \
+              -H "apikey: ${{ secrets.SUPABASE_KEY_DEV }}" \
+              -H "Content-Type: application/json" \
+              -d "{\"query\":\"$(sed 's/"/\\"/g' $file)\"}"
+          done
