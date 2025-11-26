@@ -1,4 +1,4 @@
-name: Deploy DEV (Supabase + Vercel)
+name: Deploy DEV
 
 on:
   workflow_dispatch:
@@ -10,16 +10,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Install Supabase CLI
-        run: npm install -g supabase
+        run: |
+          curl -fsSL https://get.supabase.com/cli/install.sh | sh
 
-      - name: Apply DEV migrations
+      - name: Confirm Supabase CLI
+        run: supabase --version
+
+      - name: Push DB schema to Supabase DEV
+        run: supabase db push --project-ref ${{ secrets.SUPABASE_DEV_PROJECT_REF }}
         env:
-          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DEV_URL }}
-        run: supabase db push --db-url $SUPABASE_DB_URL --local ./src/main/resources/db
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel
-
-      - name: Deploy HTML to Vercel (DEV)
-        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN_DEV }} --project ${{ secrets.VERCEL_PROJECT_ID_DEV }} --yes
+      - name: Deploy to Vercel (DEV)
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
