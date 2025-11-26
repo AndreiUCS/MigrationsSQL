@@ -1,0 +1,30 @@
+name: Deploy PROD (Supabase + Vercel)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Supabase CLI
+        run: npm install -g supabase
+
+      - name: Apply PROD migrations
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_PROD_URL }}
+        run: supabase db push --db-url $SUPABASE_DB_URL --local ./src/main/resources/db
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy HTML to Vercel (PROD)
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN_PROD }} --project ${{ secrets.VERCEL_PROJECT_ID_PROD }} --yes

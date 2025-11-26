@@ -1,0 +1,27 @@
+name: Deploy PREPROD (Supabase + Vercel)
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Supabase CLI
+        run: npm install -g supabase
+
+      - name: Apply PREPROD migrations
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_PREPROD_URL }}
+        run: supabase db push --db-url $SUPABASE_DB_URL --local ./src/main/resources/db
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy HTML to Vercel (PREPROD)
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN_PREPROD }} --project ${{ secrets.VERCEL_PROJECT_ID_PREPROD }} --yes
