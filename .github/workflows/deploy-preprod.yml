@@ -1,28 +1,30 @@
-name: Deploy PREPROD
+name: PreProd Deploy
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 11 * * *"
+    - cron: "0 2 * * *"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Install Supabase CLI
         run: |
           curl -fsSL https://get.supabase.com/cli/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Deploy DB (PREPROD)
+      - name: Check Supabase CLI
+        run: supabase --version
+
+      - name: Supabase DB Push
         run: supabase db push --db-url "${{ secrets.SUPABASE_PREPROD_URL }}"
 
-      - name: Deploy to Vercel (PREPROD)
-        run: npx vercel --prod --token "${{ secrets.VERCEL_PREPROD_TOKEN }}" --yes
+      - name: Vercel Deploy
+        run: |
+          npm install -g vercel
+          vercel deploy --token ${{ secrets.VERCEL_TOKEN }} --yes
