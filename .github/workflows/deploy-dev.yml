@@ -24,7 +24,9 @@ jobs:
         run: supabase --version
 
       - name: Supabase DB Push
-        run: supabase db push --db-url "${{ secrets.SUPABASE_DEV_URL }}"
+        run: |
+          cd supabase
+          supabase db push --db-url "${{ secrets.SUPABASE_DEV_URL }}"
 
       - name: Deploy do Vercel (dev)
         env:
