@@ -28,4 +28,4 @@ jobs:
         run: supabase db push --db-url "${{ secrets.SUPABASE_PROD_URL }}"
 
       - name: Deploy to Vercel (Production)
-        run: npx vercel --token "${{ secrets.VERCEL_TOKEN_PROD }}" --prod --yes
+        run: npx vercel --token "${{ secrets.VERCEL_TOKEN_PROD }}" --prod --yes --project SEU_PROJETO_VERCEL_PROD
