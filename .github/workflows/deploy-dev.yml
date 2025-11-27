@@ -31,6 +31,6 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_DEV }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         run: |
-          npx vercel pull --yes --environment=preview
-          npx vercel deploy --yes
+          npx vercel pull --yes --environment=development --token "$VERCEL_TOKEN_DEV"
+          npx vercel deploy --yes --token "$VERCEL_TOKEN_DEV"
 
