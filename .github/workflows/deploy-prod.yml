@@ -17,19 +17,19 @@ jobs:
       - name: Install Supabase CLI
         run: |
           curl -L "https://github.com/supabase/cli/releases/latest/download/supabase_linux_amd64.tar.gz" -o supabase.tar.gz
-          rm -rf supabase supabase.tar.gz
           tar -xvf supabase.tar.gz
           chmod +x supabase
-          sudo mv -f supabase /usr/local/bin/supabase
+          sudo mv supabase /usr/local/bin/supabase
 
       - name: Check Supabase CLI
         run: supabase --version
 
-      - name: Supabase DB Push
+      - name: Supabase DB Push (PROD)
         run: |
-          cd supabasesupabase db push --db-url "${{ secrets.SUPABASE_PROD_URL }}"
+          cd supabase
+          supabase db push --db-url "${{ secrets.SUPABASE_PROD_URL }}"
 
-      - name: Deploy do Vercel (prod)
+      - name: Deploy do Vercel (PROD)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN_PROD }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_PROD }}
