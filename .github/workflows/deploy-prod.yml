@@ -20,14 +20,12 @@ jobs:
           tar -xvf supabase.tar.gz
           chmod +x supabase
           sudo mv supabase /usr/local/bin/supabase
-          
+
       - name: Check Supabase CLI
         run: supabase --version
 
       - name: Supabase DB Push
         run: supabase db push --db-url "${{ secrets.SUPABASE_PROD_URL }}"
 
-      - name: Vercel Deploy
-        run: |
-          npm install -g vercel
-          vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
+      - name: Deploy to Vercel (Production)
+        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes

@@ -25,7 +25,5 @@ jobs:
       - name: Supabase DB Push
         run: supabase db push --db-url "${{ secrets.SUPABASE_DEV_URL }}"
 
-      - name: Vercel Deploy
-        run: |
-          npm install -g vercel
-          vercel deploy --token ${{ secrets.VERCEL_TOKEN }} --yes
+      - name: Deploy Preview to Vercel (Dev)
+        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --yes
