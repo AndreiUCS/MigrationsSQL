@@ -10,6 +10,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Create Vercel project.json
+        run: |
+          mkdir -p .vercel
+          cat <<EOF > .vercel/project.json
+          {
+            "projectId": "${{ secrets.VERCEL_PROJECT_ID_DEV }}",
+            "orgId": "${{ secrets.VERCEL_ORG_ID_DEV }}"
+          }
+          EOF
 
       - name: Install Supabase CLI
         run: |
@@ -25,5 +35,5 @@ jobs:
       - name: Supabase DB Push
         run: supabase db push --db-url "${{ secrets.SUPABASE_DEV_URL }}"
 
-      - name: Deploy Preview to Vercel (Dev)
-        run: npx vercel --token "${{ secrets.VERCEL_TOKEN_DEV }}" --yes --project deploy-dev
+      - name: Deploy to Vercel (DEV)
+        run: npx vercel --token "${{ secrets.VERCEL_TOKEN_DEV }}" --yes
