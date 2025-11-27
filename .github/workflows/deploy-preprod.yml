@@ -27,4 +27,4 @@ jobs:
         run: supabase db push --db-url "${{ secrets.SUPABASE_PREPROD_URL }}"
 
       - name: Deploy to Vercel (preprod)
-        run: npx vercel --token "${{ secrets.VERCEL_TOKEN_PREPROD }}" --yes
+        run: npx vercel --token "${{ secrets.VERCEL_TOKEN_PREPROD }}" --project "${{ secrets.VERCEL_PROJECT_ID_PREPROD }}" --yes --prod
