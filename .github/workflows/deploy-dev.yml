@@ -26,4 +26,11 @@ jobs:
         run: supabase db push --db-url "${{ secrets.SUPABASE_DEV_URL }}"
 
       - name: Deploy do Vercel (dev)
-        run: npx vercel --token "${{ secrets.VERCEL_TOKEN_DEV }}" --yes
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN_DEV }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_DEV }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        run: |
+          npx vercel pull --yes --environment=development --token "$VERCEL_TOKEN"
+          npx vercel deploy --yes --token "$VERCEL_TOKEN"
+
