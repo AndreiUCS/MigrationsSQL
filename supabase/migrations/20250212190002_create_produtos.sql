@@ -1,4 +1,3 @@
--- Criação da tabela produtos
 CREATE TABLE produtos (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -7,7 +6,6 @@ CREATE TABLE produtos (
     criado_em TIMESTAMP DEFAULT NOW()
 );
 
--- Inserções
 INSERT INTO produtos (nome, preco, estoque) VALUES
 ('Teclado Mecânico', 350.00, 25),
 ('Mouse Gamer', 150.00, 40),
