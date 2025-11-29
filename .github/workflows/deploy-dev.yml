@@ -7,26 +7,26 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
+    steps: 
+      - name: Checkout 
         uses: actions/checkout@v3
-
+        
       - name: Install Supabase CLI
         run: |
-          curl -L "https://github.com/supabase/cli/releases/latest/download/supabase_linux_amd64.tar.gz" -o supabase.tar.gz
-          rm -rf supabase supabase.tar.gz
-          tar -xvf supabase.tar.gz
-          chmod +x supabase
-          sudo mv -f supabase /usr/local/bin/supabase
-
-
+          rm -rf supabase supabase-cli supabase.tar.gz
+          curl -L \
+            "https://github.com/supabase/cli/releases/latest/download/supabase_linux_amd64.tar.gz" \
+            -o supabase.tar.gz
+          mkdir supabase-cli
+          tar -xvf supabase.tar.gz -C supabase-cli
+          sudo mv supabase-cli/supabase /usr/local/bin/supabase
+          supabase --version
+          
       - name: Check Supabase CLI
-        run: supabase --version
-
-      - name: Supabase DB Push
-        run: |
-          cd supabase
-          supabase db push --db-url "${{ secrets.SUPABASE_DEV_URL }}"
+        run: supabase --version 
+        
+      - name: Supabase DB Push 
+        run: supabase db push --db-url "${{ secrets.SUPABASE_DEV_URL }}"
 
       - name: Deploy do Vercel (dev)
         env:
