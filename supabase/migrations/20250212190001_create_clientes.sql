@@ -1,4 +1,3 @@
--- Criação da tabela clientes
 CREATE TABLE clientes (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -7,7 +6,6 @@ CREATE TABLE clientes (
     criado_em TIMESTAMP DEFAULT NOW()
 );
 
--- Inserções
 INSERT INTO clientes (nome, email, telefone) VALUES
 ('Ana Souza', 'ana.souza@example.com', '11985467890'),
 ('Bruno Almeida', 'bruno.almeida@example.com', '11999998888'),
