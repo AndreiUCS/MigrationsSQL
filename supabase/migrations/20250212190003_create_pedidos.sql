@@ -1,4 +1,3 @@
--- Criação da tabela pedidos
 CREATE TABLE pedidos (
     id SERIAL PRIMARY KEY,
     cliente_id INT NOT NULL REFERENCES clientes(id),
@@ -7,7 +6,6 @@ CREATE TABLE pedidos (
     criado_em TIMESTAMP DEFAULT NOW()
 );
 
--- Inserções
 INSERT INTO pedidos (cliente_id, produto_id, quantidade) VALUES
 (1, 3, 1),
 (2, 1, 2),
