@@ -3,8 +3,6 @@ project_id = "migrations-sql"
 [db]
 major_version = 15
 
-[migrations]
-schema = ["public"]
-
 [db.migrations]
 enabled = true
+schema_paths = ["./migrations"]
